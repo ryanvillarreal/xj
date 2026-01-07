@@ -10,8 +10,8 @@
     allowBroken = true;
   };
 
-  home.username = "null";
-  home.homeDirectory = "/home/null";
+  home.username = "xj";
+  home.homeDirectory = "/home/xj";
 
   # programs installed here
   # but modified in ./modules/
