@@ -21,7 +21,7 @@
   ];
 
   programs = {
-    base.enable = true;
+    bash.enable = true;
     home-manager.enable = true;
   };
 
