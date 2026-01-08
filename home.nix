@@ -27,7 +27,17 @@
 
   # mods
   imports = [
-    ./modules/bat.nix
-    ./modules/eza.nix
+    ./modules/bat # better cat
+    # ./modules/bash # bash ofc
+    # ./modules/eza # better ls
+    # ./modules/fonts # fonts manager
+    # ./modules/firefox # firefox
+    # ./modules/git # git
+    # ./modules/nh # nix handler
+    # ./modules/nvim # editor=nvim
+    # ./modules/ssh # ssh configs
+    # ./modules/starship # cmdline setup
+    # ./modules/wezterm # best term
   ];
+
 }
