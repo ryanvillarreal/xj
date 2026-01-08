@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+# random functions that I haven't moved to relevant dirs yet
+# shamelessly stolen from different sources thx oss <3 
+
+# listen is pretty generic it should essentially just run the listen alias 
+# which depending on the 
+function listen(){
+	#TODO - add in support for looking for a specific port with an arg
+	if [[ "$_which_os" = "linux" ]]; then
+		netstat -pantu | grep LIST
+	fi
+
+	if [[ "$_which_os" = "darwin" ]]; then
+		lsof -i -P | grep LISTEN | grep :$PORT
+	fi
+}
+
+
+function kill_port(){
+if [ -n "$1" ]; then
+  port_num="$(lsof -ti4TCP:"$1")"
+  if [ $? -eq 0 ]; then
+    kill "$port_num"
+  fi
+else
+  echo >&2 Usage: clear-port port-number
+fi
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+# show the n most used commands. defaults to 10
+function hstats {
+  if [[ $# -lt 1 ]]; then
+    NUM=10
+  else
+    NUM=${1}
+  fi
+  history | awk '{print $2}' | sort | uniq -c | sort -rn | head -"$NUM"
+}
+
+# forwarding for socks proxys/ssh tunnels
+forward() {
+    if [ "$1" == "help" ]; then
+        echo "Usage: forward [host port] || [stop] || [status]"
+        echo "example: forward pso 9090"
+    elif [ "$1" == "stop" ]; then
+        pkill -f "ssh -fqND"
+        echo "stopping ssh forwards"
+    elif [ "$1" == "status" ]; then
+        pgrep -fl "ssh -fqND"
+    else
+        local port=${2:-9090}
+        local host=${1:-thonk}
+        echo "starting forward at $host:$port"
+        ssh -fqND "$port" "$host"
+    fi
+}
+
+#TODO - fixme
+
+# change quickly to the projects folder and can pass in an arg for specific subdir
+# projects() {
+#    local projects_dir="$HOME/life/dev/hobbies/projects"
+#    if [ -n "$1" ]; then
+#      if [ -d "$projects_dir/$1" ]; then
+#        cd "$projects_dir/$1" || return
+#      else
+#        echo "Directory '$1' does not exist in $projects_dir"
+#        cd "$projects_dir" || return
+#      fi
+#    else
+#      cd "$projects_dir" || return
+#    fi
+#  }
+#
+# # change quickly to the projects folder and can pass in an arg for specific subdir
+ # configs() {
+ #   if [ -n "$1" ]; then
+ #     if [ -d "$configs/$1" ]; then
+ #       cd "$configs/$1" || return
+ #     else
+ #       echo "Directory '$1' does not exist in $configs"
+ #       cd "$configs" || return
+ #     fi
+ #   else
+ #     cd "$configs" || return
+ #   fi
+ # }
+ # 
+ # 
+ # # change quickly to the projects folder and can pass in an arg for specific subdir
+ # customers() {
+ #   local customers_dir="$HOME/life/work/customers"
+ #   if [ -n "$1" ]; then
+ #     if [ -d "$customers_dir/$1" ]; then
+ #       cd "$customers_dir/$1"
+ #     else
+ #       echo "Directory '$1' does not exist in $customers_dir"
+ #       cd "$customers_dir"
+ #     fi
+ #   else
+ #     cd "$customers_dir"
+ #   fi
+ # }
+ # 
+
